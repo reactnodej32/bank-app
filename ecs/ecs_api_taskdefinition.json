@@ -1,0 +1,32 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "%s/bank-app-api:prod",
+      "essential": true,
+      "memoryReservation": 300,
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "protocol": "tcp",
+          "containerPort": 5000
+        }
+      ],
+      "environment": [
+        {
+          "name": "DATABASE_HOST",
+          "value": "%s"
+        },
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "value": "%s"
+        },
+        {
+          "name": "MYSQL_USER",
+          "value": "%s"
+        }
+      ]
+    }
+  ],
+  "family": "bank-app-api-td"
+}

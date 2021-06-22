@@ -1,0 +1,18 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "%s/bank-app-client:prod",
+      "essential": true,
+      "memoryReservation": 300,
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ]
+    }
+  ],
+  "family": "bank-app-client-td"
+}

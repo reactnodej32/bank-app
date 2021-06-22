@@ -1,0 +1,56 @@
+version: 0.2
+env:
+  variables:
+    AWS_REGION: "us-east-1"
+    REACT_APP_USERS_SERVICE_URL: ${ALB_DNS}
+
+phases:
+  pre_build:
+    commands:
+      - |
+        if expr "$CODEBUILD_WEBHOOK_TRIGGER" == "branch/master" >/dev/null  && expr "$CODEBUILD_WEBHOOK_HEAD_REF" == "refs/heads/master" >/dev/null; then
+          DOCKER_TAG=prod
+        else
+          DOCKER_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+        fi
+      - echo "Docker tag:" $DOCKER_TAG
+      - echo "Docker tag:" $DOCKER_TAG
+      - aws s3 cp s3://docker-token/.docker.key .docker.key
+      - docker login -u $DOCKER_USERNAME --password-stdin < .docker.key
+      - rm .docker.key
+      - docker pull $DOCKER_USERNAME/bank-app-api:$DOCKER_TAG || true
+      - docker pull $DOCKER_USERNAME/bank-app-client:builder || true
+      - docker pull $DOCKER_USERNAME/bank-app-client:$DOCKER_TAG || true
+  build:
+    commands:
+      - echo building and testing dev images...
+      - docker-compose -f docker-compose.prod.yml up -d --build
+      - echo building prod images...
+      - >
+        docker build \
+          -f users/Dockerfile.prod \
+          -t $DOCKER_USERNAME/bank-app-api:$DOCKER_TAG  \
+          ./users
+      - >
+        docker build \
+          --target builder \
+          --cache-from $DOCKER_USERNAME/bank-app-client:builder \
+          -f client/Dockerfile.prod \
+          -t $DOCKER_USERNAME/bank-app-client:builder \
+          --build-arg NODE_ENV=production \
+          --build-arg REACT_APP_API_SERVICE_URL=$REACT_APP_API_SERVICE_URL \
+          ./client
+      - >
+        docker build \
+          --cache-from $DOCKER_USERNAME/bank-app-client:$DOCKER_TAG  \
+          -f client/Dockerfile.prod \
+          -t $DOCKER_USERNAME/bank-app-client:$DOCKER_TAG  \
+          ./client
+  post_build:
+    commands:
+      - echo pushing prod images to ecr...
+      - docker push $DOCKER_USERNAME/bank-app-api:$DOCKER_TAG
+      - docker push $DOCKER_USERNAME/bank-app-client:builder
+      - docker push $DOCKER_USERNAME/bank-app-client:$DOCKER_TAG
+      - chmod +x ./deploy.sh
+      - bash deploy.sh
