@@ -1,8 +1,6 @@
 ## React,Nginx,MySQL,.Net development
 
-run <br/><br/>
-
-`docker-compose up `<br/><br/>
+run `docker-compose up `<br/><br/>
 
 Then you can head on over to <br/><br/>
 
@@ -12,9 +10,7 @@ Then you can head on over to <br/><br/>
 
 If you wish to work only with dotnet and mysql only!<br/><br/>
 
-do<br/><br/>
-
-`docker-compose -f docker-compose.mysql.yml up --remove-orphans`
+run `docker-compose -f docker-compose.mysql.yml up --remove-orphans`
 
 Now you can cd into api and do <br/><br/>
 
