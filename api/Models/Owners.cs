@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace react_dotnet_example
+namespace bankapp
 {
 
     [Table("owner")]

@@ -52,4 +52,25 @@ retry
 
 ````
 
+Deploying:
+
+make sure you build the images:
+
+```
+docker build \
+  -f {FOLDER}/Dockerfile \
+  -t {docker_username}/project-name-backend:prod \
+  ./{FOLDER}
+
+docker build \
+  -f {FOLDER}/Dockerfile \
+  -t {docker_username}/project-client:prod \
+  --build-arg NODE_ENV=production \
+  --build-arg REACT_APP_API_SERVICE_URL=${REACT_APP_API_SERVICE_URL} \
+  ./{FOLDER}
+
+
+```
+
+
 If anything fails do terraform apply again or terrafrom destroy

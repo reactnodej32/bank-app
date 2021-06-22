@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>react_dotnet_example</RootNamespace>
+    <RootNamespace>bankapp</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
 

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 
 
-namespace react_dotnet_example.Controllers
+namespace bankapp.Controllers
 {
     [ApiController]
     public class UsersController : ControllerBase
