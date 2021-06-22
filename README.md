@@ -1,76 +1,66 @@
-## DOTNET-REACT-NGINX-MYSQL template
+## Development
 
-If you are attempting to deploy this Please Contact me!
-easyrun32@gmail.com!
+If you wish to work only with dotnet only and mysql!<br/>
+In the docker-compose.yml file comment out
 
-I'll be glad to help! :)
+```# # Nginx container
+  # reverseproxy:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
 
-Technolgies
+  #   depends_on:
+  #     - client
+  #   restart: always
 
-nginx: Reverse Proxy version => latest </br>
-Client: React version => 17.0.1</br>
-users: .NetCore version => 5</br>
+  #   # React container
+  # client:
+  #   stdin_open: true
+  #   container_name: client
+  #   build:
+  #     context: "./client"
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - "./client:/usr/src/app"
+  #     - "/usr/src/app/node_modules"
+  #   environment:
+  #     - NODE_ENV=production
+  #   links:
+  #     - api
+  #   ports:
+  #     - 3000:3000
 
-Endpoints:
-
-- /api/users <- .NET
-
-- localhost/api/users <- .NET
-
-- localhost <- React
-
-## Common deploy issues
-
-Error: Error creating IAM Role terraform-20210613171749996800000001: AccessDenied: User: arn:aws:iam::642815940637:user/terraform is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::642815940637:role/terraform-20210613171749996800000001 with an explicit deny
-status code: 403, request id: 4390670f-576b-40fa-a209-7c85ac3c9648
-
-Create a new aws user with admin and billing permission
-
-add this role for safety!
-retry
-
-````
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:CreateRole",
-                "iam:DeleteRole",
-                "iam:DeleteRolePolicy",
-                "iam:ListRolePolicies",
-                "iam:ListRoles",
-                "iam:PutRolePolicy"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
-    ]
-}```
-
-````
-
-Deploying:
-
-make sure you build the images:
-
-```
-docker build \
-  -f {FOLDER}/Dockerfile \
-  -t {docker_username}/project-name-backend:prod \
-  ./{FOLDER}
-
-docker build \
-  -f {FOLDER}/Dockerfile \
-  -t {docker_username}/project-client:prod \
-  --build-arg NODE_ENV=production \
-  --build-arg REACT_APP_API_SERVICE_URL=${REACT_APP_API_SERVICE_URL} \
-  ./{FOLDER}
-
-
+  # # .NET CONTAINER
+  # api:
+  #   container_name: api
+  #   ports:
+  #     - 5000:5000
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile.prod
+  #   environment:
+  #     DATABASE_HOST: database
+  #     MYSQL_ROOT_PASSWORD: dbuserpassword
+  #     MYSQL_USER: dbuser
+  #     # for development http://
+  #     # for production  http://+:5000
+  #     ASPNETCORE_URLS: "http://+;http://+:5000"
+  #   restart: always
 ```
 
+<br/>
 
-If anything fails do terraform apply again or terrafrom destroy
+then do `docker-compose up --remove-orphans` to turn on the MySql database
+
+By commenting out the other container you will only work with the database instead<br/>
+
+Now you can cd into api and do <br/>
+
+`dotnet run `
+<br/>
+Then you can head on over to
+
+`http://localhost:5000/api/users`

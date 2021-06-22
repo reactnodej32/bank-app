@@ -23,7 +23,7 @@ namespace bankapp.Controllers
             _configuration = configuration;
             _logger = logger;
             //database
-            var host = _configuration["DATABASE_HOST"] ?? "database";
+            var host = _configuration["DATABASE_HOST"] ?? "localhost";
             var password = _configuration["MYSQL_ROOT_PASSWORD"] ?? "dbuserpassword";
             var userid = _configuration["MYSQL_USER"] ?? "dbuser";
             connString = $"server={host};port=3306;userid={userid};password={password};database=users_prod;";
