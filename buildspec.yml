@@ -28,9 +28,9 @@ phases:
       - echo building prod images...
       - >
         docker build \
-          -f users/Dockerfile.prod \
+          -f api/Dockerfile.prod \
           -t $DOCKER_USERNAME/bank-app-api:$DOCKER_TAG  \
-          ./users
+          ./api
       - >
         docker build \
           --target builder \
