@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: dbuserpassword
     volumes:
       - dbdata:/var/lib/mysql
-      - ./api/_MySQL_Init_Script:/docker-entrypoint-initdb.d
+      # - ./api/_MySQL_Init_Script:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     restart: always

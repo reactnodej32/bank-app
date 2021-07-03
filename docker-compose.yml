@@ -45,6 +45,9 @@ services:
       # for production  http://+:5000
       ASPNETCORE_URLS: "http://+;http://+:5000"
     restart: always
+    #start database first before starting api
+    depends_on:
+      - database
 
   # MySQL Database Container
   database:
@@ -57,7 +60,7 @@ services:
       MYSQL_PASSWORD: dbuserpassword
     volumes:
       - dbdata:/var/lib/mysql
-      - ./api/_MySQL_Init_Script:/docker-entrypoint-initdb.d
+      # - ./api/_MySQL_Init_Script:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     restart: always

@@ -10,7 +10,7 @@ module "ecs_cluster" {
   component             = "bank"
   deployment_identifier = "app"
   //https://aws.amazon.com/ebs/pricing/ calculate the charge for ebs
-  cluster_instance_root_block_device_size = 10
+  cluster_instance_root_block_device_size = 30
   cluster_instance_root_block_device_type = "gp3"
   cluster_name                         = "cluster"
   cluster_instance_ssh_public_key_path = "./terraform.pub"

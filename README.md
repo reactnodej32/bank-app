@@ -10,12 +10,9 @@ Then you can head on over to <br/><br/>
 
 If you wish to work only with dotnet and mysql only!<br/><br/>
 
-run `docker-compose -f docker-compose.mysql.yml up --remove-orphans`
+run `npm start`
 
-Now you can cd into api and do <br/><br/>
-
-`dotnet run `
 <br/><br/>
 Then you can head on over to<br/><br/>
 
-[http://localhost:5000/api/users](http://localhost:5000/api/users)
+[http://localhost:5000/api/bankaccount](http://localhost:5000/api/bankaccount)

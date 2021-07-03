@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "api" {
   protocol = "HTTP"
   vpc_id   = aws_default_vpc.default.id
   health_check {
-    path = "/api/users"
+    path = "/api/healthcheck"
   }
 }
 //HTTP
@@ -35,6 +35,25 @@ resource "aws_lb_listener" "listener_http" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "80"
   protocol          = "HTTP"
+  default_action {
+    type = "forward"
+
+    target_group_arn = aws_lb_target_group.client.arn
+  }
+
+}
+
+
+
+
+//HTTPS TO CLIENT 
+resource "aws_lb_listener" "listener_https" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:us-east-1:642815940637:certificate/5cc3ae02-2010-4dff-aa83-8a1065b98adc"
+  // GO TO CLIENT
   default_action {
     type = "forward"
 
@@ -56,30 +75,11 @@ resource "aws_lb_listener_rule" "static" {
 
   condition {
     path_pattern {
-      values = ["/api/users", "/api/task"]
+      values = ["/api/healthcheck","/api/bankaccount","/api/*" ]
     }
   }
 
 }
-
-
-//HTTPS TO CLIENT 
-resource "aws_lb_listener" "listener_https" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:642815940637:certificate/5cc3ae02-2010-4dff-aa83-8a1065b98adc"
-  // GO TO CLIENT
-  default_action {
-    type = "forward"
-
-    target_group_arn = aws_lb_target_group.client.arn
-  }
-
-}
-
-
 //HTTPS TO USER
 resource "aws_lb_listener_rule" "https_lisener" {
 
@@ -93,7 +93,7 @@ resource "aws_lb_listener_rule" "https_lisener" {
 
   condition {
     path_pattern {
-      values = ["/api/users", "/api/task"]
+      values = ["/api/users", "/api/bankaccounts", "/api/healthcheck", "/api/*" ]
     }
   }
 

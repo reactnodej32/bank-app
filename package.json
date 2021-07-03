@@ -1,0 +1,23 @@
+{
+  "name": "bankapp",
+  "version": "1.0.0",
+  "description": "run `docker-compose up `<br/><br/>",
+  "main": "what?",
+  "scripts": {
+    "test": "concurrently \"docker-compose -f docker-compose.mysql.yml up --remove-orphans \" \"cd api && dotnet run\"",
+    "start": "concurrently \"docker-compose -f docker-compose.mysql.yml up --remove-orphans \" \"cd api && dotnet run\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactnodej32/bank-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reactnodej32/bank-app/issues"
+  },
+  "homepage": "https://github.com/reactnodej32/bank-app#readme",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
